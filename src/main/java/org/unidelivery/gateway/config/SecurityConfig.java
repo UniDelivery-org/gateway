@@ -33,6 +33,12 @@ public class SecurityConfig {
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(exchanges -> exchanges
                         .pathMatchers("/api/users/register", "/api/users/login").permitAll()
+                        // deliveries
+                        .pathMatchers("/api/deliveries/driver/**").hasRole("COURIER")
+                        .pathMatchers("/api/deliveries/customer/**").hasRole("SENDER")
+                        .pathMatchers("/api/deliveries/admin/**").hasRole("ADMIN")
+
+                        // monitoring
                         .pathMatchers("/actuator/**").permitAll()
                         .anyExchange().authenticated()
                 )
